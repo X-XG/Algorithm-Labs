@@ -36,5 +36,8 @@ int main(){
         ftime << muler.time << endl;
     }
 
+    infile.close();
+    fresult.close();
+    ftime.close();
     return 0;
 }
