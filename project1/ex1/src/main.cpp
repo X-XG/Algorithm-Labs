@@ -1,17 +1,19 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<chrono>
 
 #include "MatrixMul.h"
 
 #define NUM_GROUP 5
 
 using namespace std;
+using namespace  chrono;
 
-int main(){
+int main() {
     string input_path = "../input/1_1_input.txt";
     string result_path = "../output/result.txt";
-    string time_path = "..output/time.txt";
+    string time_path = "../output/time.txt";
 
     ifstream infile;
     ofstream fresult;
@@ -20,20 +22,27 @@ int main(){
     fresult.open(result_path);
     ftime.open(time_path);
 
-    for(int i=0; i<NUM_GROUP; i++){
+    for (int i = 0; i < NUM_GROUP; i++) {
         int n;
         infile >> n;
-        int *p = new int[n];
-        for(int j=0; j<n; j++){
+        long long* p = new long long[n + 1];
+        for (int j = 0; j <= n; j++) {
             infile >> p[j];
-        } 
+        }
 
         MatrixMul muler(n, p);
-        delete p;
-
+        delete[] p;
+        
+        auto start = system_clock::now();
+        muler.ChainMul();
+        auto end = system_clock::now();
+        auto duration = duration_cast<microseconds>(end - start);
+        double time = double(duration.count()) * microseconds::period::num / microseconds::period::den;
         fresult << muler.result << endl;
-        // fresult << muler.
-        ftime << muler.time << endl;
+
+        muler.PrintParens(1, n);
+        fresult << muler.parens<<endl;
+        ftime << time << endl;
     }
 
     infile.close();
