@@ -32,17 +32,17 @@ int main() {
 
         MatrixMul muler(n, p);
         delete[] p;
-        
+
         auto start = system_clock::now();
         muler.ChainMul();
         auto end = system_clock::now();
-        auto duration = duration_cast<microseconds>(end - start);
-        double time = double(duration.count()) * microseconds::period::num / microseconds::period::den;
+        auto duration = duration_cast<nanoseconds>(end - start);
+        double time = double(duration.count()) * nanoseconds::period::num;
         fresult << muler.result << endl;
 
         muler.PrintParens(1, n);
-        fresult << muler.parens<<endl;
-        ftime << time << endl;
+        fresult << muler.parens << endl;
+        ftime << time << "ns" << endl;
     }
 
     infile.close();
