@@ -43,6 +43,34 @@ int main() {
         muler.PrintParens(1, n);
         fresult << muler.parens << endl;
         ftime << time << "ns" << endl;
+
+        if (n == 5) {
+            cout << "m" << endl;
+            cout << "j\\i ";
+            for (int i = 1;i <= n;i++)
+                printf("%15d  ", i);
+            cout << endl;
+            for (int j = n;j >= 1;j--) {
+                cout << j << "   ";
+                for (int i = 1;i <= j;i++)
+                    printf("%15lld  ", muler.m[i][j]);
+                cout << endl;
+            }
+
+            cout << endl << "s" << endl;
+
+            cout << "j\\i ";
+            for (int i = 1;i <= n - 1;i++)
+                printf("%d  ", i);
+            cout << endl;
+            for (int j = n;j >= 2;j--) {
+                cout << j << "   ";
+                for (int i = 1;i <= j - 1;i++)
+                    printf("%d  ", muler.s[i][j]);
+                cout << endl;
+            }
+            cout << endl;
+        }
     }
 
     infile.close();

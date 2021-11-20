@@ -42,10 +42,11 @@ int main() {
 
         auto start = system_clock::now();
         lcser.GetLCS();
-        lcser.PrintLCS(len, len, "");
         auto end = system_clock::now();
         auto duration = duration_cast<nanoseconds>(end - start);
         int time = int(duration.count()) * nanoseconds::period::num;
+
+        lcser.PrintLCS(len, len, "");
 
         fresult << lcser.result << endl;
         for (auto str_lcs : lcser.lcss) {

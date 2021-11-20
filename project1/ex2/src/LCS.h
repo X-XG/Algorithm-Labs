@@ -43,7 +43,6 @@ void LCS::GetLCS() {
             else c[i][j] = c[i - 1][j] >= c[i][j - 1] ? c[i - 1][j] : c[i][j - 1];
         }
     }
-    printf("%d", c[len][len]);
 }
 
 void LCS::PrintLCS(int i, int j, std::string str_lcs) {

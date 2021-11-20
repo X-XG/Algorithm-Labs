@@ -7,11 +7,14 @@ class MatrixMul {
 private:
     int num;
     long long* scale;
-    int s[MAX_NUM][MAX_NUM];
+
 
 public:
     MatrixMul(int num, long long* scale);
     ~MatrixMul();
+
+    long long m[MAX_NUM][MAX_NUM] = { 0 };
+    int s[MAX_NUM][MAX_NUM];
 
     long long result;
     std::string parens;
@@ -33,7 +36,6 @@ MatrixMul::~MatrixMul() {
 
 void MatrixMul::ChainMul() {
     int n = this->num;
-    long long m[MAX_NUM][MAX_NUM] = { 0 };
     for (int l = 2; l <= n; l++) {
         for (int i = 1; i <= n - l + 1; i++) {
             int j = i + l - 1;
@@ -61,10 +63,3 @@ void MatrixMul::PrintParens(int i, int j) {
         parens += ')';
     }
 }
-
-// void MatrixMul::GetResult() {
-//     clock_t start = clock();
-//     ChainMul();
-//     clock_t end = clock();
-//     time = double(start - end)/CLOCKS_PER_SEC;
-// }
