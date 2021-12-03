@@ -25,7 +25,7 @@ private:
 public:
     FBHeap();
     ~FBHeap();
-    void insert(int key);
+    int insert(int key);
     // void Union(FBHeap* H1, FBHeap* H2);
     int minimum();
     int extractMin();
@@ -74,7 +74,7 @@ void FBHeap::ListRemove(Node* x) {
     // delete x;
 }
 
-void FBHeap::insert(int key) {
+int FBHeap::insert(int key) {
     auto x = new Node;
     x->key = key;
     x->degree = 0;
@@ -94,6 +94,8 @@ void FBHeap::insert(int key) {
     }
     num++;
     HashTable[x->key] = x;
+
+    return num;
 }
 
 int FBHeap::extractMin() {
@@ -140,6 +142,7 @@ void FBHeap::consolidate() {
     bool getout = false;
     while(true){
         auto x = next;
+        next = x->right;
         int d = x->degree;
         // if(A[d] == x){
         //     printf("111111111111111111111");
@@ -179,7 +182,6 @@ void FBHeap::consolidate() {
         if(getout){
             break;
         }
-        next = x->right;
     }
 
     min = nullptr;
