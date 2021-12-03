@@ -95,8 +95,8 @@ int main() {
         resTemp.push_back(H2.extractMin());
         resTemp.push_back(H2.delet(504));
         resTemp.push_back(H2.delet(203));
-        resTemp.push_back(H2.decrease(296,87));
-        resTemp.push_back(H2.decrease(278,258));
+        resTemp.push_back(H2.decrease(296, 87));
+        resTemp.push_back(H2.decrease(278, 258));
         resTemp.push_back(H2.minimum());
         resTemp.push_back(H2.extractMin());
         auto end = system_clock::now();
@@ -129,8 +129,8 @@ int main() {
         resTemp.push_back(H3.minimum());
         resTemp.push_back(H3.delet(134));
         resTemp.push_back(H3.delet(177));
-        resTemp.push_back(H3.decrease(617,360));
-        resTemp.push_back(H3.decrease(899,353));
+        resTemp.push_back(H3.decrease(617, 360));
+        resTemp.push_back(H3.decrease(899, 353));
         auto end = system_clock::now();
         auto duration = duration_cast<nanoseconds>(end - start);
         int time = int(duration.count()) * nanoseconds::period::num;
@@ -160,15 +160,51 @@ int main() {
         resTemp.push_back(H4.minimum());
         resTemp.push_back(H4.delet(415));
         resTemp.push_back(H4.extractMin());
-        resTemp.push_back(H4.decrease(620,354));
-        resTemp.push_back(H4.decrease(617,360));
-        resTemp.push_back(H4.decrease(899,353));
+        resTemp.push_back(H4.decrease(620, 354));
+        resTemp.push_back(H4.decrease(617, 360));
+        resTemp.push_back(H4.decrease(899, 353));
         auto end = system_clock::now();
         auto duration = duration_cast<nanoseconds>(end - start);
         int time = int(duration.count()) * nanoseconds::period::num;
         ftime << time << endl;
 
         fresult << "H4" << endl;
+        bool first = true;
+        for (auto res : resTemp) {
+            if (first) {
+                fresult << res;
+                first = false;
+            }
+            else {
+                fresult << "," << res;
+            }
+        }
+        fresult << endl;
+    }
+
+    H5 = FBHeap::Union(H1, H2);
+    H5 = FBHeap::Union(H5, H3);
+    H5 = FBHeap::Union(H5, H4);
+
+    {   //H5
+        vector<int> resTemp;
+        auto start = system_clock::now();
+        resTemp.push_back(H5.extractMin());
+        resTemp.push_back(H5.minimum());
+        resTemp.push_back(H5.delet(800));
+        resTemp.push_back(H5.insert(267));
+        resTemp.push_back(H5.insert(351));
+        resTemp.push_back(H5.extractMin());
+        resTemp.push_back(H5.decrease(478, 444));
+        resTemp.push_back(H5.decrease(559, 456));
+        resTemp.push_back(H5.minimum());
+        resTemp.push_back(H5.delet(929));
+        auto end = system_clock::now();
+        auto duration = duration_cast<nanoseconds>(end - start);
+        int time = int(duration.count()) * nanoseconds::period::num;
+        ftime << time << endl;
+
+        fresult << "H5" << endl;
         bool first = true;
         for (auto res : resTemp) {
             if (first) {
