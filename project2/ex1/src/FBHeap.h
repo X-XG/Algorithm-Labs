@@ -11,7 +11,7 @@ typedef struct Node {
     struct Node* right;
 } Node;
 
-Node * HashTable[LITERAL_MAX];
+Node* HashTable[LITERAL_MAX];
 
 class FBHeap {
 private:
@@ -20,8 +20,8 @@ private:
     void ListInsert(Node* x, Node* y);
     void ListRemove(Node* x);
     void consolidate();
-    void Cut(Node *x, Node *y);
-    void CascadingCut(Node *y);
+    void Cut(Node* x, Node* y);
+    void CascadingCut(Node* y);
 public:
     FBHeap();
     ~FBHeap();
@@ -42,7 +42,7 @@ FBHeap::FBHeap() {
 FBHeap::~FBHeap() {
 }
 
-int FBHeap::minimum(){
+int FBHeap::minimum() {
     return min->key;
 }
 
@@ -63,8 +63,14 @@ void FBHeap::ListInsert(Node* x, Node* y) {
 
 void FBHeap::ListRemove(Node* x) {
     if (x == nullptr)return;
-    x->left->right = x->right;
-    x->right->left = x->left;
+    else if (x->right->right == x) {
+        x->right->left = x->right;
+        x->right->right = x->right;
+    }
+    else {
+        x->left->right = x->right;
+        x->right->left = x->left;
+    }
     // delete x;
 }
 
@@ -129,11 +135,19 @@ int FBHeap::extractMin() {
 
 void FBHeap::consolidate() {
     Node* A[D_MAX] = { nullptr };
-    auto x = min;
-    auto sentry = min;
-    do {
-        auto next = x->right;
+    auto sentry = min->left;
+    auto next = min;
+    bool getout = false;
+    while(true){
+        auto x = next;
         int d = x->degree;
+        // if(A[d] == x){
+        //     printf("111111111111111111111");
+        //     exit(2);
+        // }
+        if(x==sentry){
+            getout = true;
+        }
         while (A[d] != nullptr) {
             auto y = A[d];
             if (x->key > y->key) {
@@ -141,6 +155,10 @@ void FBHeap::consolidate() {
                 y = x;
                 x = tmp;
             }
+            // if(x==x->right){
+            //     printf("fefsfwfwagwgg");
+            //     exit(-1);
+            // }
             ListRemove(y);
             if (x->child == nullptr) {
                 y->left = y;
@@ -158,8 +176,11 @@ void FBHeap::consolidate() {
             d++;
         }
         A[d] = x;
-        x = next;
-    } while (x != sentry);
+        if(getout){
+            break;
+        }
+        next = x->right;
+    }
 
     min = nullptr;
     for (int i = 0; i < D_MAX;i++) {
@@ -180,25 +201,25 @@ void FBHeap::consolidate() {
     }
 }
 
-int FBHeap::decrease(int xkey, int k){
-    Node *x = HashTable[xkey];
-    if(k>x->key) {
+int FBHeap::decrease(int xkey, int k) {
+    Node* x = HashTable[xkey];
+    if (k > x->key) {
         return -1;
     }
     x->key = k;
-    auto y=x->p;
-    if(y!=nullptr && x->key<y->key){
+    auto y = x->p;
+    if (y != nullptr && x->key < y->key) {
         Cut(x, y);
         CascadingCut(y);
     }
-    if(x->key<min->key){
+    if (x->key < min->key) {
         min = x;
     }
     return min->key;
 }
 
-void FBHeap::Cut(Node *x, Node *y){
-    if(x->right==x){
+void FBHeap::Cut(Node* x, Node* y) {
+    if (x->right == x) {
         y->child = nullptr;
     }
     else {
@@ -206,14 +227,14 @@ void FBHeap::Cut(Node *x, Node *y){
     }
     x->p = nullptr;
     y->degree--;
-    x->mark=false;
+    x->mark = false;
     ListInsert(x, min);
 }
 
-void FBHeap::CascadingCut(Node *y){
-    Node *z = y->p;
-    if(z!=nullptr){
-        if(y->mark == false){
+void FBHeap::CascadingCut(Node* y) {
+    Node* z = y->p;
+    if (z != nullptr) {
+        if (y->mark == false) {
             y->mark = true;
         }
         else {
@@ -223,18 +244,18 @@ void FBHeap::CascadingCut(Node *y){
     }
 }
 
-int FBHeap::delet(int xkey){
+int FBHeap::delet(int xkey) {
     decrease(xkey, -1);
     extractMin();
     return num;
 }
 
-FBHeap FBHeap::Union(FBHeap H1, FBHeap H2){
-    if(H1.min == nullptr){
+FBHeap FBHeap::Union(FBHeap H1, FBHeap H2) {
+    if (H1.min == nullptr) {
         H1.~FBHeap();
         return H2;
     }
-    if(H2.min == nullptr){
+    if (H2.min == nullptr) {
         H2.~FBHeap();
         return H1;
     }
@@ -245,7 +266,7 @@ FBHeap FBHeap::Union(FBHeap H1, FBHeap H2){
     H2.min->right = H1.min;
     H1.min->left = H2.min;
 
-    if(H1.min < H2.min){
+    if (H1.min < H2.min) {
         H.min = H1.min;
     }
     else {
