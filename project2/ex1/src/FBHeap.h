@@ -1,4 +1,5 @@
 #define D_MAX 20
+#define LITERAL_MAX 1005
 
 typedef struct Node {
     int key;
@@ -10,19 +11,27 @@ typedef struct Node {
     struct Node* right;
 } Node;
 
+Node * HashTable[LITERAL_MAX];
+
 class FBHeap {
 private:
     Node* min;
     int num;
     void ListInsert(Node* x, Node* y);
-    void rootLRemove(Node* x);
+    void ListRemove(Node* x);
     void consolidate();
+    void Cut(Node *x, Node *y);
+    void CascadingCut(Node *y);
 public:
     FBHeap();
     ~FBHeap();
     void insert(int key);
     // void Union(FBHeap* H1, FBHeap* H2);
-    Node* extractMin();
+    int minimum();
+    int extractMin();
+    int decrease(int xkey, int k);
+    int delet(int xkey);
+    static FBHeap Union(FBHeap H1, FBHeap H2);
 };
 
 FBHeap::FBHeap() {
@@ -31,6 +40,10 @@ FBHeap::FBHeap() {
 }
 
 FBHeap::~FBHeap() {
+}
+
+int FBHeap::minimum(){
+    return min->key;
 }
 
 void FBHeap::ListInsert(Node* x, Node* y) {
@@ -48,7 +61,7 @@ void FBHeap::ListInsert(Node* x, Node* y) {
     // }
 }
 
-void FBHeap::rootLRemove(Node* x) {
+void FBHeap::ListRemove(Node* x) {
     if (x == nullptr)return;
     x->left->right = x->right;
     x->right->left = x->left;
@@ -74,9 +87,10 @@ void FBHeap::insert(int key) {
         }
     }
     num++;
+    HashTable[x->key] = x;
 }
 
-Node* FBHeap::extractMin() {
+int FBHeap::extractMin() {
     auto z = min;
     if (z != nullptr) {
         auto x = z->child;
@@ -103,12 +117,14 @@ Node* FBHeap::extractMin() {
         }
         else {
             min = z->right;
-            rootLRemove(z);
+            ListRemove(z);
             consolidate();
         }
         num -= 1;
     }
-    return z;
+    int res = z->key;
+    delete z;
+    return res;
 }
 
 void FBHeap::consolidate() {
@@ -125,7 +141,7 @@ void FBHeap::consolidate() {
                 y = x;
                 x = tmp;
             }
-            rootLRemove(y);
+            ListRemove(y);
             if (x->child == nullptr) {
                 y->left = y;
                 y->right = y;
@@ -162,4 +178,81 @@ void FBHeap::consolidate() {
             }
         }
     }
+}
+
+int FBHeap::decrease(int xkey, int k){
+    Node *x = HashTable[xkey];
+    if(k>x->key) {
+        return -1;
+    }
+    x->key = k;
+    auto y=x->p;
+    if(y!=nullptr && x->key<y->key){
+        Cut(x, y);
+        CascadingCut(y);
+    }
+    if(x->key<min->key){
+        min = x;
+    }
+    return min->key;
+}
+
+void FBHeap::Cut(Node *x, Node *y){
+    if(x->right==x){
+        y->child = nullptr;
+    }
+    else {
+        ListRemove(x);
+    }
+    x->p = nullptr;
+    y->degree--;
+    x->mark=false;
+    ListInsert(x, min);
+}
+
+void FBHeap::CascadingCut(Node *y){
+    Node *z = y->p;
+    if(z!=nullptr){
+        if(y->mark == false){
+            y->mark = true;
+        }
+        else {
+            Cut(y, z);
+            CascadingCut(z);
+        }
+    }
+}
+
+int FBHeap::delet(int xkey){
+    decrease(xkey, -1);
+    extractMin();
+    return num;
+}
+
+FBHeap FBHeap::Union(FBHeap H1, FBHeap H2){
+    if(H1.min == nullptr){
+        H1.~FBHeap();
+        return H2;
+    }
+    if(H2.min == nullptr){
+        H2.~FBHeap();
+        return H1;
+    }
+    FBHeap H;
+    H.min = H1.min;
+    H2.min->right->left = H1.min->left;
+    H1.min->left->right = H2.min->right;
+    H2.min->right = H1.min;
+    H1.min->left = H2.min;
+
+    if(H1.min < H2.min){
+        H.min = H1.min;
+    }
+    else {
+        H.min = H2.min;
+    }
+    H.num = H1.num + H2.num;
+    H1.~FBHeap();
+    H2.~FBHeap();
+    return H;
 }
