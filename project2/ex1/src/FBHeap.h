@@ -140,7 +140,7 @@ void FBHeap::consolidate() {
     auto sentry = min->left;
     auto next = min;
     bool getout = false;
-    while(true){
+    while (true) {
         auto x = next;
         next = x->right;
         int d = x->degree;
@@ -148,7 +148,7 @@ void FBHeap::consolidate() {
         //     printf("111111111111111111111");
         //     exit(2);
         // }
-        if(x==sentry){
+        if (x == sentry) {
             getout = true;
         }
         while (A[d] != nullptr) {
@@ -179,7 +179,7 @@ void FBHeap::consolidate() {
             d++;
         }
         A[d] = x;
-        if(getout){
+        if (getout) {
             break;
         }
     }
@@ -216,6 +216,9 @@ int FBHeap::decrease(int xkey, int k) {
     }
     if (x->key < min->key) {
         min = x;
+    }
+    if (k >= 0) {
+        HashTable[k] = x;
     }
     return min->key;
 }
@@ -268,7 +271,7 @@ FBHeap FBHeap::Union(FBHeap H1, FBHeap H2) {
     H2.min->right = H1.min;
     H1.min->left = H2.min;
 
-    if (H1.min < H2.min) {
+    if (H1.min->key < H2.min->key) {
         H.min = H1.min;
     }
     else {

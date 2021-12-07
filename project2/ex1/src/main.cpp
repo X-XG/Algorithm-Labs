@@ -125,7 +125,7 @@ int main() {
         resTemp.push_back(H3.minimum());
         resTemp.push_back(H3.insert(262));
         resTemp.push_back(H3.extractMin());
-        resTemp.push_back(H3.insert(830));
+        resTemp.push_back(H3.insert(832));
         resTemp.push_back(H3.minimum());
         resTemp.push_back(H3.delet(134));
         resTemp.push_back(H3.delet(177));
@@ -161,8 +161,8 @@ int main() {
         resTemp.push_back(H4.delet(415));
         resTemp.push_back(H4.extractMin());
         resTemp.push_back(H4.decrease(620, 354));
-        resTemp.push_back(H4.decrease(617, 360));
-        resTemp.push_back(H4.decrease(899, 353));
+        resTemp.push_back(H4.decrease(410, 80));
+        resTemp.push_back(H4.extractMin());
         auto end = system_clock::now();
         auto duration = duration_cast<nanoseconds>(end - start);
         int time = int(duration.count()) * nanoseconds::period::num;
