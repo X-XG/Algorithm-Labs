@@ -63,18 +63,22 @@ int main() {
         }
 
         int count = 0;
+        int op_num = 0;
         auto start = system_clock::now();
         for (int i = 0;i < num;i++) {
             makeSet(set[i]);
+            op_num++;
         }
         for (int i = 0;i < num;i++) {
             for (int j = i + 1;j < num;j++) {
                 if (M[i][j] == 1) {
                     Union(set[i], set[j]);
+                    op_num++;
                 }
             }
         }
         for (int i = 0;i < num;i++) {
+            op_num++;
             if (findSet(set[i]) == set[i]) {
                 count++;
             }
@@ -84,6 +88,7 @@ int main() {
         int time = int(duration.count()) * nanoseconds::period::num;
         ftime << time << endl;
         fresult << "n=" << num << ' ' << count << endl;
+        cout << "n=" << num << ' ' << op_num << endl;
     }
 
     return 0;

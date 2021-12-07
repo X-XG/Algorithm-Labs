@@ -26,7 +26,6 @@ public:
     FBHeap();
     ~FBHeap();
     int insert(int key);
-    // void Union(FBHeap* H1, FBHeap* H2);
     int minimum();
     int extractMin();
     int decrease(int xkey, int k);
@@ -47,18 +46,10 @@ int FBHeap::minimum() {
 }
 
 void FBHeap::ListInsert(Node* x, Node* y) {
-    // if (y == nullptr) {
-    //     y = x;
-    //     y->left = y;
-    //     y->right = y;
-    // }
-    // else {
-    //     // x->p = nullptr;
     x->left = y->left;
     x->right = y;
     y->left->right = x;
     y->left = x;
-    // }
 }
 
 void FBHeap::ListRemove(Node* x) {
@@ -71,7 +62,6 @@ void FBHeap::ListRemove(Node* x) {
         x->left->right = x->right;
         x->right->left = x->left;
     }
-    // delete x;
 }
 
 int FBHeap::insert(int key) {
@@ -112,14 +102,6 @@ int FBHeap::extractMin() {
             } while (x != sentry);
         }
 
-        // while (x != sentry) {
-        //     auto next = x->right;
-        //     x->p = nullptr;
-        //     rootLInsert(x);
-        //     x = next;
-        // }
-        // rootLInsert(x);
-
         if (z == z->right) {
             min = nullptr;
         }
@@ -144,10 +126,7 @@ void FBHeap::consolidate() {
         auto x = next;
         next = x->right;
         int d = x->degree;
-        // if(A[d] == x){
-        //     printf("111111111111111111111");
-        //     exit(2);
-        // }
+
         if (x == sentry) {
             getout = true;
         }
@@ -158,10 +137,7 @@ void FBHeap::consolidate() {
                 y = x;
                 x = tmp;
             }
-            // if(x==x->right){
-            //     printf("fefsfwfwagwgg");
-            //     exit(-1);
-            // }
+
             ListRemove(y);
             if (x->child == nullptr) {
                 y->left = y;
