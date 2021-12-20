@@ -3,7 +3,7 @@
 #include <stack>
 
 #define MAX_NUM 750
-#define MAX_LEN 1005
+#define MAX_LEN 100000
 #define INPUT_BASE_PATH "../input/input"
 #define OUTPUT_BASE_PATH "../output/result"
 
@@ -39,8 +39,7 @@ Bellman::Bellman(int num, std::string id) {
     ioread.open(INPUT_BASE_PATH + id + ".txt");
     for (int i = 0;i < num;i++) {
         for (int j = 0;j < num;j++) {
-            \
-                char c;
+            char c;
             ioread >> w[i][j] >> c;
         }
     }
