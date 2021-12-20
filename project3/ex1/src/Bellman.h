@@ -71,20 +71,28 @@ void Bellman::run() {
 void Bellman::write() {
     std::ofstream iowrite;
     iowrite.open(OUTPUT_BASE_PATH + id + ".txt");
-    for (int i = 0;i < num;i++) {
+    for (int i = 1;i < num;i++) {
         if (node[i].d != MAX_LEN) {
-            iowrite << "0," << i << ',' << node[i].d << ";0,";
             int v = i;
             std::stack<int> S;
+            bool can_reach = true;
             while (v != 0) {
                 S.push(v);
                 v = node[v].pi;
+                if (v < 0) {
+                    can_reach = false;
+                    break;
+                }
             }
+            if (!can_reach) {
+                continue;
+            }
+            iowrite << "0," << i << ',' << node[i].d << ";0";
             while (!S.empty()) {
-                iowrite << S.top() << ',';
+                iowrite << ',' << S.top();
                 S.pop();
             }
-            iowrite << '0' << std::endl;
+            iowrite << std::endl;
         }
     }
 }

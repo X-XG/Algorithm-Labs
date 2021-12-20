@@ -29,9 +29,9 @@ void test(int num, string id) {
         }
         for (int j = 2;j <= num;j++) {
             if(JH.delta[i][j] == MAX_LEN){
-                fresult<<','<<'X';
+                fresult<<' '<<'X';
             } else {
-                fresult<<','<<JH.delta[i][j];
+                fresult<<' '<<JH.delta[i][j];
             }
         }
         fresult << endl;
