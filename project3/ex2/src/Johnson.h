@@ -2,10 +2,10 @@
 #include <string>
 #include <stack>
 #include <queue>
+#include <unordered_set>
 
 #define MAX_NUM 750
 #define MAX_LEN 100000
-#define MIN_LEN -10000
 #define INPUT_BASE_PATH "../input/input"
 #define OUTPUT_BASE_PATH "../output/result"
 
@@ -13,6 +13,7 @@ class Johnson {
 private:
     int num;
     int w[MAX_NUM][MAX_NUM];
+    std::unordered_set<int> edge[MAX_NUM];
     std::string id;
     void bellman();
     void dijkstra(int s);
@@ -39,14 +40,13 @@ Johnson::Johnson(int num, std::string id) {
         for (int j = 1;j <= num;j++) {
             char c;
             ioread >> w[i][j] >> c;
-            if (w[i][j] == 0) {
-                w[i][j] = MIN_LEN;
+            if (w[i][j] != 0) {
+                edge[i].insert(j);
             }
         }
         w[0][i] = 0;
-        w[i][0] = MIN_LEN;
+        edge[0].insert(i);
     }
-    w[0][0] = MIN_LEN;
     ioread.close();
 }
 
@@ -56,20 +56,16 @@ Johnson::~Johnson() {
 void Johnson::bellman() {
     for (int i = 0;i <= num;i++) {
         for (int u = 0;u <= num;u++) {
-            for (int v = 0;v <= num;v++) {
-                if (w[u][v] != MIN_LEN) {
-                    if (delta[0][v] > delta[0][u] + w[u][v]) {
-                        delta[0][v] = delta[0][u] + w[u][v];
-                    }
+            for (int v : edge[u]) {
+                if (delta[0][v] > delta[0][u] + w[u][v]) {
+                    delta[0][v] = delta[0][u] + w[u][v];
                 }
             }
         }
     }
     for (int u = 1;u <= num;u++) {
-        for (int v = 1;v <= num;v++) {
-            if (w[u][v] != MIN_LEN) {
-                w[u][v] = w[u][v] + delta[0][u] - delta[0][v];
-            }
+        for (int v : edge[u]) {
+            w[u][v] = w[u][v] + delta[0][u] - delta[0][v];
         }
     }
 
@@ -87,8 +83,8 @@ void Johnson::dijkstra(int s) {
         if (delta[s][u] < node.first) {
             continue;
         }
-        for (int v = 1;v <= num;v++) {
-            if (w[u][v] != MIN_LEN && (delta[s][v] > delta[s][u] + w[u][v])) {
+        for (int v : edge[u]) {
+            if (delta[s][v] > delta[s][u] + w[u][v]) {
                 delta[s][v] = delta[s][u] + w[u][v];
                 Q.push(P(delta[s][v], v));
             }
