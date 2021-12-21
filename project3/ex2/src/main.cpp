@@ -22,18 +22,12 @@ void test(int num, string id) {
     ftime << time << endl;
     fresult.open("../output/result" + id + ".txt");
     for (int i = 1;i <= num;i++) {
-        if (JH.delta[i][1] == MAX_LEN) {
-            fresult << 'X';
-        }
-        else {
-            fresult << JH.delta[i][1];
-        }
-        for (int j = 2;j <= num;j++) {
+        for (int j = 1;j <= num;j++) {
             if (JH.delta[i][j] == MAX_LEN) {
-                fresult << ' ' << 'X';
+                fresult << 'X' << ' ';
             }
             else {
-                fresult << ' ' << JH.delta[i][j];
+                fresult << JH.delta[i][j] << ' ';
             }
         }
         fresult << endl;
