@@ -43,12 +43,11 @@ Johnson::Johnson(int num, std::string id) {
                 w[i][j] = MIN_LEN;
             }
         }
-    }
-    ioread.close();
-    for (int i = 0;i <= num;i++) {
         w[0][i] = 0;
-        w[i][0] = 0;
+        w[i][0] = MIN_LEN;
     }
+    w[0][0] = MIN_LEN;
+    ioread.close();
 }
 
 Johnson::~Johnson() {
@@ -58,7 +57,7 @@ void Johnson::bellman() {
     for (int i = 0;i <= num;i++) {
         for (int u = 0;u <= num;u++) {
             for (int v = 0;v <= num;v++) {
-                if (u == 0 || w[u][v] != MIN_LEN) {
+                if (w[u][v] != MIN_LEN) {
                     if (delta[0][v] > delta[0][u] + w[u][v]) {
                         delta[0][v] = delta[0][u] + w[u][v];
                     }
@@ -102,7 +101,7 @@ void Johnson::run() {
     for (int u = 1;u <= num;u++) {
         dijkstra(u);
         for (int v = 1;v <= num;v++) {
-            if (w[u][v] != MIN_LEN)
+            if (delta[u][v] != MAX_LEN)
                 delta[u][v] = delta[u][v] - delta[0][u] + delta[0][v];
         }
     }
