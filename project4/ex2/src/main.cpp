@@ -28,6 +28,7 @@ int main() {
     for (int i = 0;i < 5;i++)
         for (int j = 0;j < 4;j++)
             matcher[i][j].run();
+
     for (int i = 0;i < 5;i++) {
         fresult << matcher[i][0].hit << endl;
         for (int j = 0;j < 4;j++) {
@@ -41,22 +42,22 @@ int main() {
     }
 
     ftime << "(2,13)" << endl;
-    for (int i = 0;i < 4;i++)
+    for (int i = 0;i < 5;i++)
         ftime << matcher[i][0].time << ' ';
     ftime << endl;
 
     ftime << "(2,1009)" << endl;
-    for (int i = 0;i < 4;i++)
+    for (int i = 0;i < 5;i++)
         ftime << matcher[i][1].time << ' ';
     ftime << endl;
 
     ftime << "(10,13)" << endl;
-    for (int i = 0;i < 4;i++)
+    for (int i = 0;i < 5;i++)
         ftime << matcher[i][2].time << ' ';
     ftime << endl;
 
     ftime << "(10,1009)" << endl;
-    for (int i = 0;i < 4;i++)
+    for (int i = 0;i < 5;i++)
         ftime << matcher[i][3].time << ' ';
     ftime << endl;
 
