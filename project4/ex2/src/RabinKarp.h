@@ -52,7 +52,7 @@ void RabinKarp::run() {
     for (int s = 0;s <= n - m;s++) {
         if (p == t) {
             if (P == T.substr(s, m)) {
-                shift.push_back(s);
+                shift.push_back(s + 1);
                 hit++;
             }
             else {
